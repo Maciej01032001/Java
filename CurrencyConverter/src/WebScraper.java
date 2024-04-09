@@ -9,7 +9,7 @@ import java.util.Map;
 public class WebScraper {
     private static final String SCRAP_URL = "https://www.money.pl/pieniadze/nbp/srednie/";
     public static Map<String, Currency> scrap() {
-        int i=0;
+        int elementToSave=0;
         String name="";
         Map<String, Currency> currencyMap = new HashMap<>();
 
@@ -20,7 +20,7 @@ public class WebScraper {
 
             for (Element div : divElements) {
                 String text = div.text();
-                switch (i) {
+                switch (elementToSave) {
                     case 0:
                         name = text;
                         currencyMap.put(name, new Currency(name));
@@ -35,11 +35,9 @@ public class WebScraper {
                         currencyMap.get(name).setChange(text);
                         break;
                     case 4:
-                        //empty case as div produce empty line we don't want to use
                         break;
                 }
-                //divs on the website are arranged in certain order name, shortName, value, change, emptyLine
-                i=(i+1)%5;
+                elementToSave=(elementToSave+1)%5;
 
             }
 

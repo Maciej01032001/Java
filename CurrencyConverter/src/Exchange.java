@@ -13,6 +13,7 @@ public class Exchange {
         String inputName = scanner.nextLine();
         System.out.println("Please enter value to calculate: ");
         float value = scanner.nextFloat();
+
         for (Map.Entry<String, Currency> entry : currencyMap.entrySet()) {
             String shortName = entry.getValue().getShortName();
             if (shortName.equals(inputName)) {
@@ -21,12 +22,13 @@ public class Exchange {
                 found = true;
             }
         }
-        if(found) {
+
+        if (found) {
             result = value * rate;
-        }
-        else {
+        } else {
             throw new Exception("I didn't find this short name");
         }
+
         return result;
     }
 }
