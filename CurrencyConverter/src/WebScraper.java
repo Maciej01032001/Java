@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WebScraper {
-    public static Map<String, Currency> Scrap() {
+    private static final String SCRAP_URL = "https://www.money.pl/pieniadze/nbp/srednie/";
+    public static Map<String, Currency> scrap() {
         int i=0;
         String name="";
-        String url = "https://www.money.pl/pieniadze/nbp/srednie/";
         Map<String, Currency> currencyMap = new HashMap<>();
 
         try {
-            Document doc = Jsoup.connect(url).get();
+            Document doc = Jsoup.connect(SCRAP_URL).get();
             Elements divElements = doc.select("div.rt-td");
 
 
@@ -26,17 +26,19 @@ public class WebScraper {
                         currencyMap.put(name, new Currency(name));
                         break;
                     case 1:
-                        currencyMap.get(name).shortName = text;
+                        currencyMap.get(name).setShortName(text);
                         break;
                     case 2:
-                        currencyMap.get(name).value = text;
+                        currencyMap.get(name).setValue(text);
                         break;
                     case 3:
-                        currencyMap.get(name).change = text;
+                        currencyMap.get(name).setChange(text);
                         break;
                     case 4:
+                        //empty case as div produce empty line we don't want to use
                         break;
                 }
+                //divs on the website are arranged in certain order name, shortName, value, change, emptyLine
                 i=(i+1)%5;
 
             }
